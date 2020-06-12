@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <style>
-        .main{text-align:center;}
+        body{
+            background-image: linear-gradient(to right, grey ,white);
+        }
+        .main{text-align:left;}
+        img{
+            border-radius: 100%;
+        }
+        section{
+            padding-top: 50px;
+            padding-right: 30px;
+            padding-bottom: 50px;
+            
+        }
+        #proj{
+            border: solid black;
+           width: 50%;
+        }
 
     </style>
 </head>
@@ -15,23 +31,19 @@
 </div>
 <div class="main" id="maincontainer" hidden>
     <img id="profilePic"
-        height="200",width="200">
-    <h2 id="fullName"></h2>
-    <p id="bio"></p>
-    <h5 id="followerInfo"></h5>
+        height="200",width="200" >
+    <h1 id="fullName"></h1>
+    <h3 id="bio"></h3>
+    <h3 id="followerInfo"></h3>
     <p>Check me on<a id="gitHubLink">Github</a></p>
+    <a href="https://twitter.com/reshab_shrestha?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @reshab_shrestha</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <section>
-        My Projects
+        <h2>My Projects</h2>
         <table id="proj">
             <tr>
                 <th>Name</th>
                 <th>Link</th>
-            </tr>
-            <tr>
-                <td id="projName"></td>
-                <td id="projUrl"></td>
-            </tr>
-            
+            </tr>       
         </table>
     </section>
 
@@ -48,17 +60,31 @@
             document.getElementById('bio').textContent=data['bio']
             document.getElementById('followerInfo').textContent=followerInfo1
             document.getElementById('gitHubLink').href = data['html_url']
-            document.getElementById('maincontainer').hidden=false
-            document.getElementById('loading').hidden=true
-        })
-        fetch("https://api.github.com/users/ReshabXtha/repos")
+
+
+            fetch("https://api.github.com/users/ReshabXtha/repos")
             .then(Response=>Response.json())
             .then(function(repo){
                 console.log(repo)
-                console.log(repo['name'])
-                document.getElementById('projName').textContent =repo['name']
-                document.getElementById('projUrl').href = repo['html_url']
+                let project = document.getElementById('proj')
+                repo.forEach(Element =>{
+                    let projName= Element['name']
+                    let projUrl = Element['html_url']
+
+                    let repo=document.createElement('tr')
+                    repo.innerHTML=`
+                        <td>${projName}</td>
+                        <td>${projUrl}</td>`
+
+                        project.appendChild(repo)
+                })
             })
+           
+       
+            document.getElementById('maincontainer').hidden=false
+            document.getElementById('loading').hidden=true
+        })
+        
        
 
     </script>
