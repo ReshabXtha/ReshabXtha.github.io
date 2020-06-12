@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        .main{text-align:center;}
+
+    </style>
+</head>
+<body>
+<div id="loading">
+    Loading....!
+</div>
+<div class="main" id="maincontainer" hidden>
+    <img id="profilePic"
+        height="200",width="200">
+    <h2 id="fullName"></h2>
+    <p id="bio"></p>
+    <h5 id="followerInfo"></h5>
+    <p>Check me on<a id="gitHubLink">Github</a></p>
+    <section>
+        My Projects
+        <table id="proj">
+            <tr>
+                <th>Name</th>
+                <th>Link</th>
+            </tr>
+            <tr>
+                <td id="projName"></td>
+                <td id="projUrl"></td>
+            </tr>
+            
+        </table>
+    </section>
+
+
+    <script>
+        fetch("https://api.github.com/users/ReshabXtha")
+        .then(Response=>Response.json()) 
+        .then(function(data){
+            console.log(data)
+            let followerCount=data['followers']
+            var followerInfo1 =`I have been followed by ${followerCount} awesome people on Github`
+            document.getElementById('profilePic').src =data['avatar_url']
+            document.getElementById('fullName').textContent =data['name']
+            document.getElementById('bio').textContent=data['bio']
+            document.getElementById('followerInfo').textContent=followerInfo1
+            document.getElementById('gitHubLink').href = data['html_url']
+            document.getElementById('maincontainer').hidden=false
+            document.getElementById('loading').hidden=true
+        })
+        fetch("https://api.github.com/users/ReshabXtha/repos")
+            .then(Response=>Response.json())
+            .then(function(repo){
+                console.log(repo)
+                console.log(repo['name'])
+                document.getElementById('projName').textContent =repo['name']
+                document.getElementById('projUrl').href = repo['html_url']
+            })
+       
+
+    </script>
+ </div>   
+</body>
+</html>
